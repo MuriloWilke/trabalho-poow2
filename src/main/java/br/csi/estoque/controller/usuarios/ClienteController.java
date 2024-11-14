@@ -60,7 +60,7 @@ public class ClienteController {
     @PostMapping
     public ResponseEntity<Cliente> salvar(@RequestBody @Valid Cliente cliente, UriComponentsBuilder uriBuilder) {
         this.service.salvar(cliente);
-        URI uri = uriBuilder.path("cliente/{uuid}").buildAndExpand(cliente.getUuid()).toUri();
+        URI uri = uriBuilder.path("/cliente/{uuid}").buildAndExpand(cliente.getUuid()).toUri();
         return ResponseEntity.created(uri).body(cliente);
     }
 
@@ -82,7 +82,6 @@ public class ClienteController {
             @ApiResponse(responseCode = "204", description = "Cliente deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Cliente não encontrado")
     })
-
     @Transactional
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deletar(

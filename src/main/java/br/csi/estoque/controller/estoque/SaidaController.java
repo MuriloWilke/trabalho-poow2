@@ -60,7 +60,7 @@ public class SaidaController {
     @PostMapping
     public ResponseEntity<Saida> salvar(@RequestBody @Valid Saida saida, UriComponentsBuilder uriBuilder) {
         this.service.salvar(saida);
-        URI uri = uriBuilder.path("saida/{uuid}").buildAndExpand(saida.getUuid()).toUri();
+        URI uri = uriBuilder.path("/saida/{uuid}").buildAndExpand(saida.getUuid()).toUri();
         return ResponseEntity.created(uri).body(saida);
     }
 
@@ -82,7 +82,6 @@ public class SaidaController {
             @ApiResponse(responseCode = "204", description = "Saída deletada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Saída não encontrada")
     })
-
     @Transactional
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deletar(

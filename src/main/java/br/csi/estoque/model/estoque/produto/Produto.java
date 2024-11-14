@@ -1,5 +1,7 @@
 package br.csi.estoque.model.estoque.produto;
 
+import br.csi.estoque.model.estoque.categoria.Categoria;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -7,6 +9,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -57,14 +61,17 @@ public class Produto {
 
     @NonNull
     @NotNull
-    @Column(nullable = false, length = 50)
-    @Size(max = 50, message = "A categoria do produto não pode ter mais de 50 caracteres")
-    @Schema(description = "Categoria do produto", example = "Remédio")
-    private String categoria;
-
-    @NonNull
-    @NotNull
     @Column(nullable = false)
     @Schema(description = "Indica se o produto necessita de uma receita", example = "false")
     private boolean receitaObrigatoria;
+
+    @ManyToMany
+    @JoinTable(
+            name = "produto_categoria",
+            joinColumns = @JoinColumn(name = "id_produto"),
+            inverseJoinColumns = @JoinColumn(name = "id_categoria")
+    )
+    @JsonManagedReference
+    @Schema(description = "Categorias associadas ao produto")
+    private Set<Categoria> categorias = new HashSet<>();
 }

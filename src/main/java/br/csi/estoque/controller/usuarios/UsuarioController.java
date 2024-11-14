@@ -80,7 +80,7 @@ public class UsuarioController {
     @Transactional
     public ResponseEntity<Usuario> salvar(@RequestBody @Valid Usuario usuario, UriComponentsBuilder uriBuilder) {
         this.service.salvar(usuario);
-        URI uri = uriBuilder.path("usuario/{uuid}").buildAndExpand(usuario.getUuid()).toUri();
+        URI uri = uriBuilder.path("/usuario/{uuid}").buildAndExpand(usuario.getUuid()).toUri();
         return ResponseEntity.created(uri).body(usuario);
     }
 
@@ -102,7 +102,6 @@ public class UsuarioController {
             @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado")
     })
-
     @Transactional
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deletar(

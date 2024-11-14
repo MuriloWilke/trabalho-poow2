@@ -60,7 +60,7 @@ public class EntradaController {
     @PostMapping
     public ResponseEntity<Entrada> salvar(@RequestBody @Valid Entrada entrada, UriComponentsBuilder uriBuilder) {
         this.service.salvar(entrada);
-        URI uri = uriBuilder.path("entrada/{uuid}").buildAndExpand(entrada.getUuid()).toUri();
+        URI uri = uriBuilder.path("/entrada/{uuid}").buildAndExpand(entrada.getUuid()).toUri();
         return ResponseEntity.created(uri).body(entrada);
     }
 
@@ -82,7 +82,6 @@ public class EntradaController {
             @ApiResponse(responseCode = "204", description = "Entrada deletada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Entrada não encontrada")
     })
-
     @Transactional
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deletar(

@@ -35,6 +35,7 @@ public class SaidaService {
         if(optionalSaida.isPresent()) {
             Saida s = optionalSaida.get();
             s.setCliente(saida.getCliente());
+            s.setUsuario(saida.getUsuario());
             s.setProduto(saida.getProduto());
             s.setQuantidade(saida.getQuantidade());
             this.repository.save(s);

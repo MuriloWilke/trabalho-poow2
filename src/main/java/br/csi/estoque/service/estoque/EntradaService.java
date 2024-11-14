@@ -27,11 +27,11 @@ public class EntradaService {
 
     public Optional<Entrada> getEntradaUUID(String uuid) {
         UUID uuidFormatado = UUID.fromString(uuid);
-        return this.repository.findEntradaByUuid(uuidFormatado);
+        return this.repository.findByUuid(uuidFormatado);
     }
 
     public void atualizarUUID(Entrada entrada) {
-        Optional<Entrada> entradaOptional = this.repository.findEntradaByUuid(entrada.getUuid());
+        Optional<Entrada> entradaOptional = this.repository.findByUuid(entrada.getUuid());
         if (entradaOptional.isPresent()) {
             Entrada e = entradaOptional.get();
             e.setProduto(entrada.getProduto());
@@ -44,6 +44,6 @@ public class EntradaService {
     }
 
     public void deletarUUID(String uuid) {
-        this.repository.deleteEntradaByUuid(UUID.fromString(uuid));
+        this.repository.deleteByUuid(UUID.fromString(uuid));
     }
 }

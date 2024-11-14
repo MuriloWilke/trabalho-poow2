@@ -1,5 +1,6 @@
 package br.csi.estoque.controller.estoque;
 
+import br.csi.estoque.model.estoque.categoria.Categoria;
 import br.csi.estoque.model.estoque.produto.Produto;
 import br.csi.estoque.service.estoque.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +61,7 @@ public class ProdutoController {
     @PostMapping
     public ResponseEntity<Produto> salvar(@RequestBody @Valid Produto produto, UriComponentsBuilder uriBuilder) {
         this.service.salvar(produto);
-        URI uri = uriBuilder.path("produto/{uuid}").buildAndExpand(produto.getUuid()).toUri();
+        URI uri = uriBuilder.path("/produto/{uuid}").buildAndExpand(produto.getUuid()).toUri();
         return ResponseEntity.created(uri).body(produto);
     }
 
@@ -77,12 +78,22 @@ public class ProdutoController {
         return ResponseEntity.ok(produto);
     }
 
+    @Operation(summary = "Adicionar Categoria", description = "Adiciona uma categoria a um produto.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Categoria adicionada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Produto ou categoria não encontrado")
+    })
+    @Transactional
+    @PutMapping("/atribuir/{uuid}")
+    public ResponseEntity atribuirCategoria(@PathVariable String uuid, @RequestBody Categoria categoria) {
+        return ResponseEntity.ok(this.service.atribuirCategoria(uuid, categoria));
+    }
+
     @Operation(summary = "Deletar produto", description = "Remove um produto pelo seu UUID.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Produto deletado com sucesso"),
-            @ApiResponse(responseCode = "404", description = "Produto não encontrado")
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado/a")
     })
-
     @Transactional
     @DeleteMapping("/{uuid}")
     public ResponseEntity<Void> deletar(

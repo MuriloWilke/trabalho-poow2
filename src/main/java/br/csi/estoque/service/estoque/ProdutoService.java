@@ -1,5 +1,7 @@
 package br.csi.estoque.service.estoque;
 
+import br.csi.estoque.model.estoque.categoria.Categoria;
+import br.csi.estoque.model.estoque.categoria.CategoriaRepository;
 import br.csi.estoque.model.estoque.produto.Produto;
 import br.csi.estoque.model.estoque.produto.ProdutoRepository;
 import org.springframework.stereotype.Service;
@@ -37,14 +39,33 @@ public class ProdutoService {
             p.setDosagem(produto.getDosagem());
             p.setNome(produto.getNome());
             p.setPreco(produto.getPreco());
-            p.setQuantidade(produto.getQuantidade());
-            p.setCategoria(produto.getCategoria());
             p.setReceitaObrigatoria(produto.isReceitaObrigatoria());
             this.repository.save(p);
         }
         else{
             throw new RuntimeException("Produto não encontrado");
         }
+    }
+
+    public String atribuirCategoria(String uuid, Categoria categoria) {
+
+        UUID uuidFormatado = UUID.fromString(uuid);
+
+        Optional<Produto> produtoOptional = this.repository.findByUuid(uuidFormatado);
+        if (produtoOptional.isPresent()) {
+            Produto produto = produtoOptional.get();
+
+            produto.getCategorias().add(categoria);
+            categoria.getProdutos().add(produto);
+
+            this.repository.save(produto);
+
+            return "Categoria atribuída com sucesso";
+
+        } else {
+            return "Categoria ou produto não encontrada/o";
+        }
+
     }
 
     public void deletarUUID(String uuid) {
