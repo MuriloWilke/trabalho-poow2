@@ -4,7 +4,7 @@ CREATE TABLE usuarios (
                          nome VARCHAR(50) NOT NULL,
                          email VARCHAR(100) NOT NULL UNIQUE,
                          senha VARCHAR(255) NOT NULL,
-                         data_cadastro DATE NOT NULL,
+                         data_cadastro TIMESTAMP NOT NULL,
                          permissao VARCHAR(20) NOT NULL
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE entradas (
                           uuid UUID UNIQUE NOT NULL,
                           id_produto INT NOT NULL,
                           quantidade INT NOT NULL,
-                          data DATE NOT NULL,
+                          data TIMESTAMP NOT NULL,
                           FOREIGN KEY (id_produto) REFERENCES produtos(id)
 );
 
@@ -63,7 +63,7 @@ CREATE TABLE saidas (
                         id_cliente INT NOT NULL,
                         id_usuario INT NOT NULL,
                         id_produto INT NOT NULL,
-                        data DATE NOT NULL,
+                        data TIMESTAMP NOT NULL,
                         quantidade INT NOT NULL,
                         FOREIGN KEY (id_cliente) REFERENCES clientes(id),
                         FOREIGN KEY (id_usuario) REFERENCES usuarios(id),
